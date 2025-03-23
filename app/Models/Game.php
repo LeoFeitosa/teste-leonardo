@@ -13,6 +13,7 @@ class Game extends Model
     protected $fillable = [
         'date',
         'season',
+        'status',
         'period',
         'home_team_score',
         'visitor_team_score',
