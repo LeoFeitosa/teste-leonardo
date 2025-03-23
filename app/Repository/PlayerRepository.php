@@ -3,43 +3,22 @@
 namespace App\Repository;
 
 use App\Contracts\CrudRepositoryInterface;
-use App\Models\Team;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Player;
+use App\Repository\Traits\CrudRepositoryTrait;
 
-class TeamRepository implements CrudRepositoryInterface
+class PlayerRepository implements CrudRepositoryInterface
 {
-    protected $team;
+    use CrudRepositoryTrait;
 
-    public function __construct(Team $team)
+    public function __construct(Player $player)
     {
-        $this->team = $team;
-    }
-
-    public function create(array $data): Team
-    {
-        return $this->team->create($data);
-    }
-
-    public function update($id, array $data): Team
-    {
-        $team = $this->team->findOrFail($id);
-        $team->update($data);
-        return $team;    }
-
-    public function delete($id): bool
-    {
-        $team = $this->team->findOrFail($id);
-        return $team->delete();    }
-
-    public function find($id): Team
-    {
-        return $this->team->findOrFail($id);
+        $this->model = $player;
     }
 
     public function updateOrCreate(array $values): void
     {
-        foreach ($values as $team) {
-            $this->team->updateOrCreate(
+        foreach ($values as $player) {
+            $this->model->updateOrCreate(
                 [
                     'abbreviation' => $team['abbreviation'] ?? "",
                     'conference' => $team['conference'] ?? null,
@@ -50,10 +29,5 @@ class TeamRepository implements CrudRepositoryInterface
                 ]
             );
         }
-    }
-
-    public function all(): Collection
-    {
-        return $this->team->all();
     }
 }
