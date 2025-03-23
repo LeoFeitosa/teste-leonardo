@@ -25,16 +25,16 @@ class FetchPlayersJob implements ShouldQueue
      */
     public function handle(BallDontLieService $service, PlayerRepository $playerRepository): void
     {
-        $teams = $service->getPlayers();
+        $players = $service->getPlayers();
 
-        if (empty($teams['data'])) {
-            Log::warning('Nenhum time foi retornado pela API.');
+        if (empty($players['data'])) {
+            Log::warning('Nenhum jogador foi retornado pela API.');
             return;
         }
 
-        $playerRepository->updateOrCreate($teams['data']);
+        $playerRepository->updateOrCreate($players['data']);
 
-        Log::info(count($teams) . ' jogadores inseridos/atualizados com sucesso!');
+        Log::info(count($players) . ' jogadores inseridos/atualizados com sucesso!');
     }
 
 }
