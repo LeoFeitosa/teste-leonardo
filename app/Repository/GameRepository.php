@@ -3,31 +3,59 @@
 namespace App\Repository;
 
 use App\Contracts\CrudRepositoryInterface;
-use App\Models\Team;
+use App\Models\Game;
 use App\Repository\Traits\CrudRepositoryTrait;
+use Illuminate\Support\Facades\Log;
 
-class TeamRepository implements CrudRepositoryInterface
+class GameRepository implements CrudRepositoryInterface
 {
     use CrudRepositoryTrait;
 
-    public function __construct(Team $team)
+    private $teamRepository;
+
+    public function __construct(Game $team, TeamRepository $teamRepository)
     {
         $this->model = $team;
+        $this->teamRepository = $teamRepository;
     }
 
     public function updateOrCreate(array $values): void
     {
-        foreach ($values as $team) {
-            $this->model->updateOrCreate(
+        foreach ($values as $gameData) {
+            // Corrigir o uso de updateOrCreate com condições e valores
+            $game = Game::updateOrCreate(
                 [
-                    'abbreviation' => $team['abbreviation'] ?? "",
-                    'conference' => $team['conference'] ?? null,
-                    'division' => $team['division'] ?? null,
-                    'city' => $team['city'] ?? "",
-                    'name' => $team['name'] ?? "",
-                    'full_name' => $team['full_name'] ?? "",
+                    'id' => $gameData['id'],
+                    'date' => $gameData['date'],
+                    'season' => $gameData['season'],
+                    'status' => $gameData['status'],
+                    'period' => $gameData['period'],
+                    'home_team_score' => $gameData['home_team_score'],
+                    'visitor_team_score' => $gameData['visitor_team_score'],
+                    'postseason' => $gameData['postseason'],
+                    'time' => $gameData['time'],
+                    'datetime' => $gameData['datetime'],
                 ]
             );
+
+            // Verificar se os times existem antes de associá-los ao jogo
+            $homeTeam = $this->teamRepository->find($gameData['home_team']['id']);
+            $visitorTeam = $this->teamRepository->find($gameData['visitor_team']['id']);
+
+            // Se ambos os times existirem, associá-los ao jogo
+            if ($homeTeam && $visitorTeam) {
+                $game->teams()->sync([
+                    $homeTeam->id => ['is_home_team' => true],
+                    $visitorTeam->id => ['is_home_team' => false],
+                ]);
+            } else {
+                if (!$homeTeam) {
+                    Log::warning("Time da casa não encontrado para o jogo ID: {$gameData['id']}");
+                }
+                if (!$visitorTeam) {
+                    Log::warning("Time visitante não encontrado para o jogo ID: {$gameData['id']}");
+                }
+            }
         }
     }
 }
