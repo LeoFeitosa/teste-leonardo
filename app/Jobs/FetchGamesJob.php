@@ -2,13 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
 use App\Services\BallDontLieService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 
-class FetchPlayersJob implements ShouldQueue
+class FetchGamesJob implements ShouldQueue
 {
     use Queueable;
 
@@ -23,18 +24,18 @@ class FetchPlayersJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(BallDontLieService $service, PlayerRepository $playerRepository): void
+    public function handle(BallDontLieService $service, GameRepository $gameRepository): void
     {
-        $teams = $service->getPlayers();
+        $games = $service->getGames();
 
-        if (empty($teams['data'])) {
-            Log::warning('Nenhum time foi retornado pela API.');
+        if (empty($games['data'])) {
+            Log::warning('Nenhum jogo foi retornado pela API.');
             return;
         }
 
-        $playerRepository->updateOrCreate($teams['data']);
+        $gameRepository->updateOrCreate($games['data']);
 
-        Log::info(count($teams) . ' jogadores inseridos/atualizados com sucesso!');
+        Log::info(count($games) . ' jogos inseridos/atualizados com sucesso!');
     }
 
 }
