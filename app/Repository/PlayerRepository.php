@@ -20,12 +20,18 @@ class PlayerRepository implements CrudRepositoryInterface
         foreach ($values as $player) {
             $this->model->updateOrCreate(
                 [
-                    'abbreviation' => $team['abbreviation'] ?? "",
-                    'conference' => $team['conference'] ?? null,
-                    'division' => $team['division'] ?? null,
-                    'city' => $team['city'] ?? "",
-                    'name' => $team['name'] ?? "",
-                    'full_name' => $team['full_name'] ?? "",
+                    'first_name' => $player['first_name'] ?? "",
+                    'last_name' => $player['last_name'] ?? null,
+                    'position' => $player['position'] ?? null,
+                    'height' => $player['height'] ?? null,
+                    'weight' => $player['weight'] ?? null,
+                    'jersey_number' => $player['jersey_number'] ?? null,
+                    'college' => $player['college'] ?? null,
+                    'country' => $player['country'] ?? null,
+                    'draft_year' => $player['draft_year'] ?? null,
+                    'draft_round' => $player['draft_round'] ?? null,
+                    'draft_number' => $player['draft_number'] ?? null,
+                    'team_id' => $player['team']['id'],
                 ]
             );
         }
