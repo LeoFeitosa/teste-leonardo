@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\FetchPlayersJob;
 use App\Jobs\FetchTeamsJob;
 use Illuminate\Console\Command;
 
@@ -27,6 +28,7 @@ class FetchBallDontLieCommand extends Command
     public function handle()
     {
         FetchTeamsJob::dispatch();
+        FetchPlayersJob::dispatch();
         $this->info('Job de busca de times foi despachado!');
     }
 }
