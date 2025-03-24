@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TeamRequest;
+use App\Http\Resources\TeamResource;
 use App\Repository\TeamRepository;
 
 class TeamController extends Controller
@@ -19,7 +20,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        return $this->teamRepository->all();
+        return new TeamResource($this->teamRepository->all());
     }
 
     /**
@@ -35,7 +36,7 @@ class TeamController extends Controller
      */
     public function show(string $id)
     {
-        return $this->teamRepository->find($id);
+        return new TeamResource($this->teamRepository->find($id));
     }
     /**
      * Update the specified resource in storage.
