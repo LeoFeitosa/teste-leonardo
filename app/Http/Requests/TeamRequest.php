@@ -30,7 +30,6 @@ class TeamRequest extends FormRequest
             'abbreviation' => 'required|string|max:3',
         ];
 
-        // Se for uma requisição de update, os campos podem ser opcionais (exceto o id)
         if ($this->isMethod('put') || $this->isMethod('patch')) {
             $rules['conference'] = 'sometimes|required|string|max:255';
             $rules['division'] = 'sometimes|required|string|max:255';
