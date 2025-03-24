@@ -15,6 +15,16 @@ class PlayerRepository implements CrudRepositoryInterface
         $this->model = $player;
     }
 
+    public function all()
+    {
+        return $this->model->with('team')->get();
+    }
+
+    public function find($id)
+    {
+        return $this->model->with('team')->findOrFail($id);
+    }
+
     public function updateOrCreate(array $values): void
     {
         foreach ($values as $player) {
