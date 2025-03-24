@@ -19,6 +19,16 @@ class GameRepository implements CrudRepositoryInterface
         $this->teamRepository = $teamRepository;
     }
 
+    public function all()
+    {
+        return $this->model->with(['homeTeam', 'visitorTeam'])->get();
+    }
+
+    public function find($id)
+    {
+        return $this->model->with(['homeTeam', 'visitorTeam'])->findOrFail($id);
+    }
+
     public function updateOrCreate(array $values): void
     {
         foreach ($values as $gameData) {
