@@ -33,7 +33,6 @@ class PlayerRequest extends FormRequest
             'team_id' => 'required|exists:teams,id',
         ];
 
-        // Se for uma requisição de update (PUT/PATCH), as regras são ajustadas
         if ($this->isMethod('put') || $this->isMethod('patch')) {
             $rules['draft_year'] = 'sometimes|nullable|numeric';
             $rules['draft_round'] = 'sometimes|nullable|numeric';

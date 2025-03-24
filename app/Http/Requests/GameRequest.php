@@ -11,7 +11,7 @@ class GameRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,26 @@ class GameRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'date' => 'required|date',
+            'season' => 'required|integer|min:1',
+            'status' => 'required|string|max:255',
+            'period' => 'required|integer|min:1',
+            'home_team_score' => 'required|integer|min:0',
+            'visitor_team_score' => 'required|integer|min:0',
+            'postseason' => 'boolean',
         ];
+
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            $rules['date'] = 'sometimes|required|date';
+            $rules['season'] = 'sometimes|required|integer|min:1';
+            $rules['status'] = 'sometimes|required|string|max:255';
+            $rules['period'] = 'sometimes|required|integer|min:1';
+            $rules['home_team_score'] = 'sometimes|required|integer|min:0';
+            $rules['visitor_team_score'] = 'sometimes|required|integer|min:0';
+            $rules['postseason'] = 'sometimes|boolean';
+        }
+
+        return $rules;
     }
 }
