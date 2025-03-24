@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GameRequest;
 use App\Http\Resources\GameResource;
 use App\Repository\GameRepository;
-use Illuminate\Http\Request;
 
 class GamesController extends Controller
 {
@@ -27,7 +27,7 @@ class GamesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(GameRequest $request)
     {
         return $this->gameRepository->create($request->all());
     }
@@ -43,7 +43,7 @@ class GamesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(GameRequest $request, string $id)
     {
         return $this->gameRepository->update($id, $request->all());
     }
