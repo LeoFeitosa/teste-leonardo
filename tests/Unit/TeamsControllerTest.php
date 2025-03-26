@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\User;
 use Tests\TestCase;
 use App\Models\Team;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,6 +10,17 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class TeamsControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected $user;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+
+        $this->actingAs($this->user);
+    }
 
     /**
      * Teste de criação de time

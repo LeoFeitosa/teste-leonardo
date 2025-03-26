@@ -22,11 +22,11 @@ class AuthController extends Controller
         ]);
 
         // Cria o token para o usuário com base no seu papel
-        $token = $user->createToken($request->role . '-token', $this->getAbilitiesForRole($user));
+//        $token = $user->createToken($request->role . '-token', $this->getAbilitiesForRole($user));
 
         return response()->json([
             'message' => 'Usuário cadastrado com sucesso!',
-            'token' => $token->plainTextToken
+//            'token' => $token->plainTextToken
         ]);
     }
 
